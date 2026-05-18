@@ -9,21 +9,23 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
-body{background:#03030A;display:flex;align-items:center;justify-content:center;min-height:100vh;font-family:'Inter',system-ui,sans-serif;}
-.trow:hover{background:#0F0F22 !important;}
+body{background:linear-gradient(135deg,#06060E 0%,#0A0618 50%,#06060E 100%);display:flex;align-items:center;justify-content:center;min-height:100vh;font-family:'Inter',system-ui,sans-serif;}
+.trow:hover{background:#131228 !important;}
 .trow:hover .tactions{opacity:1 !important;}
 @keyframes ring{0%,100%{opacity:.15}50%{opacity:.6}}
 @keyframes eq1{0%,100%{height:3px}50%{height:13px}}
 @keyframes eq2{0%,100%{height:9px}35%{height:3px}70%{height:12px}}
 @keyframes eq3{0%,100%{height:5px}30%{height:14px}65%{height:4px}}
 @keyframes eq4{0%,100%{height:7px}45%{height:3px}80%{height:10px}}
+@keyframes rainbow-glow{0%{box-shadow:0 0 90px #FF3CAC33,0 40px 120px rgba(0,0,0,.9)}33%{box-shadow:0 0 90px #FF8C4233,0 40px 120px rgba(0,0,0,.9)}66%{box-shadow:0 0 90px #9B5DE533,0 40px 120px rgba(0,0,0,.9)}100%{box-shadow:0 0 90px #FF3CAC33,0 40px 120px rgba(0,0,0,.9)}}
+@keyframes progress-shimmer{0%{background-position:0% 50%}100%{background-position:200% 50%}}
 input[type=range]{-webkit-appearance:none;appearance:none;background:transparent;height:3px;}
-input[type=range]::-webkit-slider-runnable-track{background:#181830;height:3px;border-radius:2px;}
-input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:12px;height:12px;border-radius:50%;background:#A89FFF;margin-top:-4.5px;cursor:pointer;box-shadow:0 0 6px #7C6FF088;}
+input[type=range]::-webkit-slider-runnable-track{background:#1A1835;height:3px;border-radius:2px;}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:12px;height:12px;border-radius:50%;background:#FF3CAC;margin-top:-4.5px;cursor:pointer;box-shadow:0 0 6px #FF3CAC88;}
 ::-webkit-scrollbar{width:4px;}
 ::-webkit-scrollbar-track{background:transparent;}
-::-webkit-scrollbar-thumb{background:#181830;border-radius:2px;}
-::-webkit-scrollbar-thumb:hover{background:#4E44B0;}
+::-webkit-scrollbar-thumb{background:#1E1A35;border-radius:2px;}
+::-webkit-scrollbar-thumb:hover{background:#9B5DE5;}
 </style>
 </head>
 <body>
@@ -83,11 +85,13 @@ function ft(s){if(!s||isNaN(s))return'0:00';return`${Math.floor(s/60)}:${(~~(s%6
 let _uid=0;
 
 const C={
-  bg:'#06060E',panel:'#0C0C1A',bar:'#090912',border:'#181830',
-  hover:'#0F0F22',active:'#13132C',
-  accent:'#7C6FF0',accentB:'#4E44B0',accentG:'#A89FFF',
-  cyan:'#00D4FF',text:'#E0E0F5',sub:'#6868A0',muted:'#363660',
+  bg:'#06060E',panel:'#0D0D1F',bar:'#09091A',border:'#1E1A35',
+  hover:'#131228',active:'#1A1840',
+  accent:'#FF3CAC',accentB:'#9B5DE5',accentG:'#FF8C42',
+  cyan:'#00F5FF',green:'#06D6A0',yellow:'#FFD166',
+  text:'#F0F0FF',sub:'#7070A8',muted:'#363660',
 };
+const EQ_COLORS=['#FF3CAC','#FF8C42','#FFD166','#06D6A0','#00F5FF','#9B5DE5','#FF3CAC','#FF8C42','#FFD166'];
 
 // ── SVG Icons (inline, no lucide CDN needed) ──────────────────
 const Icon=({d,size=16,color='currentColor',strokeW=2,fill='none'})=>(
@@ -223,7 +227,8 @@ function App(){
       onClick={()=>setCtxId(null)}>
 
       <div style={{width:'800px',maxWidth:'100%',background:C.panel,border:`1px solid ${drop?C.accent:C.border}`,borderRadius:'18px',overflow:'hidden',
-        boxShadow:`0 0 90px rgba(124,111,240,${drop?.25:.12}),0 40px 120px rgba(0,0,0,.9)`,transition:'all .3s'}}>
+        animation:drop?'none':'rainbow-glow 6s ease-in-out infinite',
+        boxShadow:drop?`0 0 90px ${C.accent}55,0 40px 120px rgba(0,0,0,.9)`:'',transition:'all .3s'}}>
 
         {/* Title bar */}
         <div style={{background:C.bar,padding:'10px 18px',display:'flex',alignItems:'center',borderBottom:`1px solid ${C.border}`}}>
@@ -231,10 +236,10 @@ function App(){
             {['#FF5F57','#FFBD2E','#28CA41'].map(c=><div key={c} style={{width:11,height:11,borderRadius:'50%',background:c,boxShadow:`0 0 6px ${c}66`}}/>)}
           </div>
           <div style={{flex:1,display:'flex',alignItems:'center',justifyContent:'center',gap:'8px'}}>
-            <div style={{width:18,height:18,borderRadius:'4px',background:`linear-gradient(135deg,${C.accentB},${C.accent})`,display:'flex',alignItems:'center',justifyContent:'center'}}>
+            <div style={{width:18,height:18,borderRadius:'4px',background:'linear-gradient(135deg,#FF3CAC,#FF8C42)',display:'flex',alignItems:'center',justifyContent:'center'}}>
               <Icon d={icons.disc} size={10} color="white"/>
             </div>
-            <span style={{color:C.accentG,fontSize:12,letterSpacing:'0.25em',fontWeight:800}}>AVELENO</span>
+            <span style={{background:'linear-gradient(90deg,#FF3CAC,#FF8C42,#FFD166,#06D6A0,#00F5FF,#9B5DE5)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent',backgroundClip:'text',fontSize:12,letterSpacing:'0.25em',fontWeight:800}}>AVELENO</span>
             <span style={{color:C.sub,fontSize:12,letterSpacing:'0.15em'}}>PLAYER</span>
           </div>
           <span style={{color:C.muted,fontSize:11}}>{lib.length} tracks</span>
@@ -265,9 +270,10 @@ function App(){
 
             <div style={{display:'flex',gap:'3px',alignItems:'flex-end',justifyContent:'center',height:'22px',padding:'0 10px'}}>
               {[1,2,3,4,5,4,3,2,1].map((h,i)=>(
-                <div key={i} style={{flex:1,borderRadius:'2px 2px 0 0',background:isPlay?C.accent:C.muted,
+                <div key={i} style={{flex:1,borderRadius:'2px 2px 0 0',background:isPlay?EQ_COLORS[i]:C.muted,
                   animation:isPlay?`eq${(i%4)+1} ${0.55+i*0.06}s ease-in-out infinite`:'none',
-                  height:`${h*2.2}px`,transition:'background .4s'}}/>
+                  height:`${h*2.2}px`,transition:'background .4s',
+                  boxShadow:isPlay?`0 0 6px ${EQ_COLORS[i]}99`:'none'}}/>
               ))}
             </div>
 
@@ -335,7 +341,7 @@ function App(){
                     style={{display:'flex',alignItems:'center',gap:'12px',padding:'10px 14px',borderRadius:'10px',border:`1px solid ${C.border}`,marginBottom:'6px',cursor:'pointer',transition:'all .15s'}}
                     onMouseEnter={e=>{e.currentTarget.style.background=C.hover;e.currentTarget.style.borderColor=C.accentB;}}
                     onMouseLeave={e=>{e.currentTarget.style.background='transparent';e.currentTarget.style.borderColor=C.border;}}>
-                    <div style={{width:38,height:38,borderRadius:'8px',background:`linear-gradient(135deg,${C.accentB},${C.accent})`,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
+                    <div style={{width:38,height:38,borderRadius:'8px',background:'linear-gradient(135deg,#FF3CAC,#9B5DE5)',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
                       <Icon d={icons.list} size={16} color="white"/>
                     </div>
                     <div style={{flex:1}}>
@@ -386,15 +392,16 @@ function App(){
                         display:'flex',alignItems:'center',justifyContent:'center',position:'relative',border:`1px solid ${act?C.accentB:C.border}`}}>
                         {trk.cover?<img src={trk.cover} style={{width:'100%',height:'100%',objectFit:'cover'}} alt=""/>:<Icon d={icons.disc} size={14} color={C.muted}/>}
                         {act&&isPlay&&(
-                          <div style={{position:'absolute',inset:0,background:'rgba(76,68,176,.7)',display:'flex',alignItems:'center',justifyContent:'center'}}>
+                          <div style={{position:'absolute',inset:0,background:'rgba(20,10,40,.75)',display:'flex',alignItems:'center',justifyContent:'center'}}>
                             <div style={{display:'flex',gap:'2px',alignItems:'flex-end',height:'14px'}}>
-                              {[0,1,2].map(i=><div key={i} style={{width:'2px',borderRadius:'1px',background:'white',animation:`eq${i+1} ${0.5+i*0.07}s ease-in-out infinite`}}/>)}
+                              {[0,1,2].map(i=><div key={i} style={{width:'2px',borderRadius:'1px',background:EQ_COLORS[i],animation:`eq${i+1} ${0.5+i*0.07}s ease-in-out infinite`}}/>)}
                             </div>
                           </div>
                         )}
                       </div>
                       <div style={{flex:1,minWidth:0}}>
-                        <div style={{color:act?C.cyan:C.text,fontSize:13,fontWeight:act?700:400,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{trk.title}</div>
+                        <div style={{fontSize:13,fontWeight:act?700:400,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',
+                          background:act?'linear-gradient(90deg,#FF3CAC,#FF8C42)':'none',WebkitBackgroundClip:act?'text':'unset',WebkitTextFillColor:act?'transparent':'unset',backgroundClip:act?'text':'unset',color:act?'transparent':C.text}}>{trk.title}</div>
                         <div style={{color:C.muted,fontSize:11,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',marginTop:1}}>{trk.artist}</div>
                       </div>
                       <div className="tactions" style={{display:'flex',gap:'2px',opacity:0,transition:'opacity .2s'}}>
@@ -450,8 +457,8 @@ function App(){
             <div ref={barR} onClick={seek}
               style={{flex:1,height:'3px',background:C.border,borderRadius:'2px',cursor:'pointer',position:'relative',transition:'height .15s'}}
               onMouseEnter={e=>e.currentTarget.style.height='5px'} onMouseLeave={e=>e.currentTarget.style.height='3px'}>
-              <div style={{position:'absolute',left:0,top:0,height:'100%',borderRadius:'2px',width:`${pct}%`,background:`linear-gradient(90deg,${C.accentB},${C.accentG})`,transition:'width .1s'}}/>
-              <div style={{position:'absolute',top:'50%',left:`${pct}%`,transform:'translate(-50%,-50%)',width:'12px',height:'12px',borderRadius:'50%',background:C.accentG,boxShadow:`0 0 10px ${C.accent}`,border:`2px solid ${C.bar}`,transition:'left .1s',pointerEvents:'none'}}/>
+              <div style={{position:'absolute',left:0,top:0,height:'100%',borderRadius:'2px',width:`${pct}%`,background:'linear-gradient(90deg,#FF3CAC,#FF8C42,#FFD166,#06D6A0,#00F5FF,#9B5DE5)',transition:'width .1s'}}/>
+              <div style={{position:'absolute',top:'50%',left:`${pct}%`,transform:'translate(-50%,-50%)',width:'12px',height:'12px',borderRadius:'50%',background:'linear-gradient(135deg,#FF3CAC,#FF8C42)',boxShadow:'0 0 10px #FF3CAC',border:`2px solid ${C.bar}`,transition:'left .1s',pointerEvents:'none'}}/>
             </div>
             <span style={{color:C.muted,fontSize:11,width:'34px',fontVariantNumeric:'tabular-nums'}}>{ft(dur)}</span>
           </div>
@@ -469,7 +476,7 @@ function App(){
 
             <div style={{display:'flex',alignItems:'center',gap:'5px'}}>
               <button onClick={()=>setShuf(s=>!s)}
-                style={{width:32,height:32,borderRadius:'8px',border:'none',background:'none',color:shuf?C.accentG:C.muted,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',transition:'color .2s'}}>
+                style={{width:32,height:32,borderRadius:'8px',border:'none',background:shuf?'rgba(6,214,160,.12)':'none',color:shuf?C.green:C.muted,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',transition:'all .2s'}}>
                 <Icon d={icons.shuf} size={15} color="currentColor"/>
               </button>
               <button onClick={()=>skipF(-1)}
@@ -478,9 +485,9 @@ function App(){
                 <Icon d={icons.skipB} size={17} color={C.text}/>
               </button>
               <button onClick={tog}
-                style={{width:50,height:50,borderRadius:'50%',border:'none',background:`linear-gradient(135deg,${C.accentB},${C.accent})`,color:'white',cursor:'pointer',
+                style={{width:50,height:50,borderRadius:'50%',border:'none',background:'linear-gradient(135deg,#FF3CAC,#FF8C42)',color:'white',cursor:'pointer',
                   display:'flex',alignItems:'center',justifyContent:'center',
-                  boxShadow:isPlay?`0 0 32px ${C.accent}99,0 0 8px ${C.accent}55`:'0 2px 8px rgba(0,0,0,.4)',transition:'box-shadow .4s,transform .1s'}}
+                  boxShadow:isPlay?'0 0 32px #FF3CAC99,0 0 16px #FF8C4255':'0 2px 8px rgba(0,0,0,.4)',transition:'box-shadow .4s,transform .1s'}}
                 onMouseEnter={e=>e.currentTarget.style.transform='scale(1.07)'} onMouseLeave={e=>e.currentTarget.style.transform='scale(1)'}>
                 <Icon d={isPlay?icons.pause:icons.play} size={20} color="white" fill="white"/>
               </button>
@@ -490,9 +497,9 @@ function App(){
                 <Icon d={icons.skipF} size={17} color={C.text}/>
               </button>
               <button onClick={()=>setRep(r=>(r+1)%3)} title={repLabels[rep]}
-                style={{width:32,height:32,borderRadius:'8px',border:'none',background:'none',color:rep>0?C.accentG:C.muted,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',position:'relative',transition:'color .2s'}}>
+                style={{width:32,height:32,borderRadius:'8px',border:'none',background:rep>0?'rgba(0,245,255,.10)':'none',color:rep>0?C.cyan:C.muted,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',position:'relative',transition:'all .2s'}}>
                 <Icon d={icons.rep} size={15} color="currentColor"/>
-                {rep===2&&<span style={{position:'absolute',top:4,right:3,width:9,height:9,borderRadius:'50%',background:C.accent,border:`1.5px solid ${C.bar}`,fontSize:6,display:'flex',alignItems:'center',justifyContent:'center',color:'white',fontWeight:800}}>1</span>}
+                {rep===2&&<span style={{position:'absolute',top:4,right:3,width:9,height:9,borderRadius:'50%',background:C.cyan,border:`1.5px solid ${C.bar}`,fontSize:6,display:'flex',alignItems:'center',justifyContent:'center',color:'#06060E',fontWeight:800}}>1</span>}
               </button>
             </div>
 
